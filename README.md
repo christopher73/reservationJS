@@ -17,4 +17,4 @@
 
 ## Usefull Curl cmds
 
-    ```curl -d '{"MyKey":"My Value"}' -H "Content-Type: application/json" http://127.0.0.1:8080/api/reserve```
+    `curl -d '{"MyKey":"My Value"}' -H "Content-Type: application/json" http://127.0.0.1:8080/api/reserve`
