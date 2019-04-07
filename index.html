@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Tables Page</title>
+    <title>Reservation Page</title>
 
-    <!-- Latest compiled and minified CSS -->
+    <!-- Latest compiled and minified CSS & JS -->
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -13,7 +13,11 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   </head>
+
   <body>
     <div class="container">
       <div class="jumbotron">
@@ -21,22 +25,56 @@
           <span class="fa fa-fire"></span> Hot Restaurant
         </h1>
         <hr />
-        <h2 class="text-center">
-          We only have 5 tables! Book your seat before they all are gone!
-        </h2>
+        <h2 class="text-center">Make your reservation</h2>
         <br />
-
         <div class="text-center">
-          <a href="/tables"
-            ><button class="btn btn-lg btn-primary">
+          <a href="./tables.html">
+            <button class="btn btn-lg btn-primary">
               <span class="fa fa-list-alt"></span> View Tables
-            </button></a
-          >
-          <a href="/reserve"
-            ><button class="btn btn-lg btn-danger">
-              <span class="fa fa-credit-card"></span> Make Reservation
-            </button></a
-          >
+            </button>
+          </a>
+          <a href="/">
+            <button class="btn btn-lg btn-default">
+              <span class="fa fa-home"></span>
+            </button>
+          </a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <!-- Reservation Page -->
+          <div class="card">
+            <div class="card-header">
+              Table Reservation
+            </div>
+            <div class="card-body">
+              <form id="form" role="form">
+                <div class="form-group">
+                  <label for="reserve-name">Name</label>
+                  <input type="text" class="form-control" id="reserve-name" />
+                </div>
+                <div class="form-group">
+                  <label for="reserve-phone">Phone Number</label>
+                  <input type="text" class="form-control" id="reserve-phone" />
+                </div>
+                <div class="form-group">
+                  <label for="reserve-email">Email</label>
+                  <input type="text" class="form-control" id="reserve-email" />
+                </div>
+                <div class="form-group">
+                  <label for="reserve-unique-id">Unique ID</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="reserve-unique-id"
+                  />
+                </div>
+                <button id="send" type="submit" class="btn btn-primary submit">
+                  Submit
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -49,5 +87,49 @@
         </div>
       </footer>
     </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </body>
 </html>
+
+<!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS SENT TO OUR SERVER -->
+<script type="text/javascript">
+  $("#form").on("submit", function(e) {
+    e.preventDefault(); //prevent form from submitting
+    let name = $("#reserve-name").val();
+    let phone = $("#reserve-phone").val();
+    let email = $("#reserve-email").val();
+    var data = {
+      name: name,
+      phone: phone,
+      email: email
+    };
+    console.log(JSON.stringify(data)); //use the console for debugging, F12 in Chrome, not alerts
+
+    axios
+      .post("http://127.0.0.1:8080/api/reserve", data)
+      .then(function(response) {
+        console.log(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  });
+
+  // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
+  // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
+  // Our api recognizes the route (/api/tables)... and then runs the associated code (found in api-routes.js).
+  // In this case the associated code "saves" the data to the table-data.js file or waitinglist-data.js file
+
+  // Here we grab the form elements
+
+  // This line is the magic. It"s very similar to the standard ajax function we used.
+  // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
+  // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
+  // depending on if a tables is available or not.
+
+  // If a table is available... tell user they are booked.
+
+  // If a table is available... tell user they on the waiting list.
+
+  // Clear the form when submitting
+</script>

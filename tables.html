@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Tables</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script src="https://code.jquery.com/jquery.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron">
+        <h1 class="text-center">
+          <span class="fa fa-fire"></span> Reservation List
+        </h1>
+        <hr />
+        <div class="text-center">
+          <a href="./index.html">
+            <button class="btn btn-lg btn-primary">
+              <span class="fa fa-list-alt"></span> Make Reservation
+            </button>
+          </a>
+          <a href="/">
+            <button class="btn btn-lg btn-default">
+              <span class="fa fa-home"></span>
+            </button>
+          </a>
+        </div>
+      </div>
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <!-- <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
+<script type="text/javascript">
+  $(document).ready(function() {
+    axios
+      .get("http://127.0.0.1:8080/api/reservations")
+      .then(function(res) {
+        console.log(res.data);
+        for (let i = 0; i < res.data.length; i++) {
+          //var obj = JSON.parse(res.data[i]);
+          //let obj = res.data[i];
+          console.log(res.data[i].name);
+          //let num = i + 1;
+          $("#tbody").append(
+            `<tr><th scope="row">${i + 1}</th><td>${res.data[i].name}</td><td>${
+              res.data[i].phone
+            }</td><td>${res.data[i].email}</td></tr>`
+          );
+        }
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+  });
+</script>
